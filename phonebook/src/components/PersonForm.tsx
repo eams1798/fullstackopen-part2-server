@@ -1,4 +1,6 @@
 import { IPerson } from "../interfaces/Person";
+import { v4 as uuidv4 } from 'uuid';
+import { createPerson, updatePerson } from "../utils/FetchPerson";
 
 export interface IPersonFormProps {
   persons: IPerson[];
@@ -19,18 +21,42 @@ const PersonForm = ({persons, setPersons, name, setName, number, setNumber}: IPe
       alert('Please enter a phone number');
     }
     else if (persons.some(person => person.name === name)) {
-      alert(`${name} is already added to phonebook`);
+      if (confirm(`${name} is already added to phonebook, would you replace the old number with a new one?`)) {
+        let changedPerson = persons.filter( person => person.name === name)[0];
+        changedPerson = {...changedPerson, number};
+
+        updatePerson(changedPerson.id, changedPerson)
+        .then(response => {
+          const restOfPersons = persons.filter( (person) => person.id != changedPerson.id );
+          setPersons([...restOfPersons, response]);
+          setName('');
+          setNumber('');
+        });
+      }
     }
     else if (persons.some(person => person.number === number)) {
-      alert(`${number} is already added to phonebook`);
+      if (confirm(`${number} is already added to phonebook, would you update its old name with the new one?`)) {
+        let changedPerson = persons.filter( person => person.number === number)[0];
+        changedPerson = {...changedPerson, name};
+
+        updatePerson(changedPerson.id, changedPerson)
+        .then(response => {
+          const restOfPersons = persons.filter( (person) => person.id != changedPerson.id );
+          setPersons([...restOfPersons, response]);
+          setName('');
+          setNumber('');
+        });
+      }
     }
     else {
-      setPersons([
-        ...persons,
-        {name: name, number: number}
-      ]);
-      setName('');
-      setNumber('');
+      const newPerson = {id: uuidv4(), name, number};
+
+      createPerson(newPerson)
+        .then(response => {
+          setPersons([...persons, response]);
+          setName('');
+          setNumber('');
+        }) ;
     }
   };
 
