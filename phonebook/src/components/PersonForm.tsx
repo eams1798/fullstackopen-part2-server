@@ -9,9 +9,13 @@ export interface IPersonFormProps {
   setName: React.Dispatch<React.SetStateAction<string>>;
   number: string;
   setNumber: React.Dispatch<React.SetStateAction<string>>;
+  setMessage: React.Dispatch<React.SetStateAction<{
+    isError: boolean;
+    message: string;
+}>>
 }
 
-const PersonForm = ({persons, setPersons, name, setName, number, setNumber}: IPersonFormProps) => {
+const PersonForm = ({persons, setPersons, name, setName, number, setNumber, setMessage}: IPersonFormProps) => {
   const addPerson = ( e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (name === '') {
@@ -31,6 +35,7 @@ const PersonForm = ({persons, setPersons, name, setName, number, setNumber}: IPe
           setPersons([...restOfPersons, response]);
           setName('');
           setNumber('');
+          setMessage({isError: false, message: `Updated ${name} ${number}`})
         });
       }
     }
@@ -45,6 +50,7 @@ const PersonForm = ({persons, setPersons, name, setName, number, setNumber}: IPe
           setPersons([...restOfPersons, response]);
           setName('');
           setNumber('');
+          setMessage({isError: false, message: `Updated ${name} ${number}`})
         });
       }
     }
@@ -56,6 +62,7 @@ const PersonForm = ({persons, setPersons, name, setName, number, setNumber}: IPe
           setPersons([...persons, response]);
           setName('');
           setNumber('');
+          setMessage({isError: false, message: `Added ${name}`})
         }) ;
     }
   };

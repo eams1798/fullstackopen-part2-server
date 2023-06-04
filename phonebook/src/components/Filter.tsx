@@ -6,11 +6,11 @@ interface IFilterProps {
 const Filter = ({pattern, setPattern}: IFilterProps) => {
   return (
     <div>
-        filter shown with <input
-          type="text"
-          onChange={(e) => setPattern(e.target.value)}
-          value={pattern} />
-      </div>
+      filter shown with <input
+        type="text"
+        onChange={(e) => setPattern(e.target.value)}
+        value={pattern} />
+    </div>
   )
 };
 
