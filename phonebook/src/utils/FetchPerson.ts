@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { IPerson } from '../interfaces/Person';
-const baseUrl = 'http://localhost:3001/persons'
+const baseUrl = '/api/persons'
 
 const getAllPersons = (): Promise<IPerson[]> => {
   const request = axios.get(baseUrl);
