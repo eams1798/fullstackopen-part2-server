@@ -16,7 +16,7 @@ const Persons = ({persons, setPersons, pattern, setMessage}: IPersonsProps) => {
     person.name.toLowerCase().includes(pattern.toLowerCase())
   ));
 
-  const removePerson = (e: React.MouseEvent, id: string) => {
+  const removePerson = (e: React.MouseEvent, id: string | undefined) => {
     e.preventDefault;
 
     const deletedPersonName = persons.find( (person) => person.id === id )?.name;

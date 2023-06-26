@@ -1,5 +1,4 @@
 import { IPerson } from "../interfaces/Person";
-import { v4 as uuidv4 } from 'uuid';
 import { createPerson, updatePerson } from "../utils/FetchPerson";
 
 export interface IPersonFormProps {
@@ -16,8 +15,7 @@ export interface IPersonFormProps {
 }
 
 const PersonForm = ({persons, setPersons, name, setName, number, setNumber, setMessage}: IPersonFormProps) => {
-  const addPerson = ( e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const addPerson = () => {
     if (name === '') {
       alert('Please enter a new name');
     }
@@ -31,6 +29,7 @@ const PersonForm = ({persons, setPersons, name, setName, number, setNumber, setM
 
         updatePerson(changedPerson.id, changedPerson)
         .then(response => {
+          console.log(response);
           const restOfPersons = persons.filter( (person) => person.id != changedPerson.id );
           setPersons([...restOfPersons, response]);
           setName('');
@@ -55,7 +54,7 @@ const PersonForm = ({persons, setPersons, name, setName, number, setNumber, setM
       }
     }
     else {
-      const newPerson = {id: uuidv4(), name, number};
+      const newPerson = {name, number};
 
       createPerson(newPerson)
         .then(response => {
@@ -68,7 +67,7 @@ const PersonForm = ({persons, setPersons, name, setName, number, setNumber, setM
   };
 
   return (
-  <form onSubmit={(e) => addPerson(e)}>
+  <form onSubmit={addPerson}>
       <div>
         name: <input
           type="text"
